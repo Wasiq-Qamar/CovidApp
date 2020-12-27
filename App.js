@@ -1,21 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import HomeScreen from './components/HomeScreen';
+import CountryList from './components/CountryList';
+import FavouriteList from './components/FavouriteList';
 
-export default function App() {
+
+const CountryStack = createStackNavigator();
+const FavouriteStack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+
+function Root1() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+      <CountryStack.Navigator initialRouteName="List of Countries">
+        <CountryStack.Screen name="List of Countries" component={CountryList} />
+      </CountryStack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function Root2() {
+  return (
+      <FavouriteStack.Navigator >
+        <FavouriteStack.Screen name="Favourite Countries" component={FavouriteList} />
+      </FavouriteStack.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName="World Statistics">
+        <Drawer.Screen name="Country Statistics" component={Root1} />
+        <Drawer.Screen name="Favourite Countries" component={Root2} />
+        <Drawer.Screen name="World Statistics" component={HomeScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+
